@@ -73,6 +73,9 @@ class NanFangPeopleRecipe(BasicNewsRecipe):
         articles = get_weekly() 
         index = []
         for a in articles.keys():
+            if len(articles[a]) < 1:
+                continue
+            
             story = []
             for item in articles[a]:
                 title = item[1]

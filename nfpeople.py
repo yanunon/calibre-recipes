@@ -33,12 +33,13 @@ def get_article(sa, from_time):
         t = datetime.fromtimestamp(int(item['timestamp']))
         if t > from_time:
             if sa == 'fengmian':
-                time.sleep(10)
+                time.sleep(5)
                 url = 'http://nfrwzk.cms.palmtrends.com/api_v2.php?action=cover&sa=fengmians&id=%d&offset=0&count=10&uid=1234567' % (int(item['id']))
                 resp = urllib2.urlopen(url)
                 cover_data = json.loads(resp.read())
-                for cover_item in cover_data['list']:
-                    article.append([int(cover_item['id']), cover_item['title']])
+                if cover_data['code'] == 1:
+                    for cover_item in cover_data['list']:
+                        article.append([int(cover_item['id']), cover_item['title']])
             else:
                 article.append([int(item['id']), item['title']])
     return article
@@ -58,7 +59,7 @@ def get_weekly():
                 exist_id.append(item[0])
 
         articles[SA[sa]] = article
-        time.sleep(10)
+        time.sleep(5)
 
     return articles
 
@@ -68,6 +69,7 @@ class NanFangPeopleRecipe(BasicNewsRecipe):
     no_stylesheets = True
     timeout = 5
     timefmt = '[%Y %m %d]'
+    remove_tags = [dict(id='o_info')]
 
     def parse_index(self):
         articles = get_weekly() 

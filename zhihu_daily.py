@@ -7,7 +7,7 @@ Created on 2013-06-30 13:27
 '''
 import urllib2
 import json
-
+from datetime import datetime
 from calibre.web.feeds.news import BasicNewsRecipe
 
 USER_AGENT = 'ZhihuApi/1.0.0-beta (Linux; Android 4.2.2; Galaxy Nexus Build/Google/yakju/maguro/JDQ39/zh_CN) Google-HTTP-Java-Client/1.15.0-rc (gzip) Google-HTTP-Java-Client/1.15.0-rc (gzip)'
@@ -21,7 +21,7 @@ class ZhihuDailyRecipe(BasicNewsRecipe):
     #simultaneous_downloads = 10
     delay = 1.0
     timeout = 5
-    timefmt = '[%Y %m %d]'
+    timefmt = ' [%Y %m %d]'
 
     def get_browser(self, *args, **kwargs):
         from calibre import browser
@@ -32,6 +32,7 @@ class ZhihuDailyRecipe(BasicNewsRecipe):
         return 'http://daily.zhihu.com/img/Logo.png'
 
     def parse_index(self):
+        self.title += datetime.now().strftime(self.timefmt)
         req = urllib2.Request(LATEST_URL, headers=HEADER)
         resp = urllib2.urlopen(req)
         newses = json.loads(resp.read())

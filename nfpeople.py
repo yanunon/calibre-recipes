@@ -68,10 +68,11 @@ class NanFangPeopleRecipe(BasicNewsRecipe):
     auto_cleanup = True
     no_stylesheets = True
     timeout = 5
-    timefmt = '[%Y %m %d]'
+    timefmt = ' [%Y %m %d]'
     remove_tags = [dict(id='o_info')]
 
     def parse_index(self):
+        self.title += datetime.now().strftime(self.timefmt)
         articles = get_weekly() 
         index = []
         for a in articles.keys():

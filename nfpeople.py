@@ -51,14 +51,13 @@ def get_weekly():
     exist_id = []
     for sa in SA.keys():
         article = get_article(sa, from_time)
-        
+        new_article = []
         for item in article:
-            if item[0] in exist_id:
-                article.remove(item)
-            else:
+            if item[0] not in exist_id:
+                new_article.append(item)
                 exist_id.append(item[0])
 
-        articles[SA[sa]] = article
+        articles[SA[sa]] = new_article
         time.sleep(5)
 
     return articles
